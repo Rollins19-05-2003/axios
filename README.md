@@ -1,70 +1,165 @@
-# Getting Started with Create React App
+# Important Question :
+- What is Axios?
+- Advantage of using Axios?
+- Use Axios in React with Promises
+- Error handling with Axios
+- Axios with Async Await
+- Best Way to write Axios
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## What is Axios?
+Axios is lightweight package and use to make HTTP requests in Any Javascript Library like React, Angular or Vue. Axios makes it easy to send asynchronous HTTP requests to REST endpoints and perform CRUD operations. If you use Fetch method in Javascript, Axios is the “Easy to use” Version of Fetch.
 
-## Available Scripts
 
-In the project directory, you can run:
+## Advantages of using Axios
+Axios by default Work in JSON format.So no more JSON parsing.
+Make all types of HTTP requests (GET, POST, PUT, DELETE)
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## How to install Axios in React App
+Like any other npm package, you have to simply install Axios package in your React Application and import axios from the axios package.
+- npm install axios
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Use Axios in React with Promises and Error Handling
+import { useState, useEffect } from "react";
+import "./App.css";
+import axios from "axios.jsx";
 
-### `npm test`
+const App = () => {
+  const [myData, setMyData] = useState([]);
+  const [isError, setIsError] = useState("");
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+  // using Promises
+  useEffect(() => {
+    axios
+      .get("https://jsonplaceholder.typicode.com/posts")
+      .then((response) => setMyData(response.data))
+      .catch((error) => setIsError(error.message));
+  }, []);
 
-### `npm run build`
+  return (
+    <>
+      <h1>Axios Tutorial</h1>
+      {isError !== "" && <h2>{isError}</h2>}
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+      <div className="grid">
+        {myData.slice(0, 9).map((post) => {
+          const { body, id, title } = post;
+          return (
+            <div key={id} className="card">
+              <h2>{title.slice(0, 15).toUpperCase()}</h2>
+              <p>{body.slice(0, 100)}</p>
+            </div>
+          );
+        })}
+      </div>
+    </>
+  );
+};
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+export default App;
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Use Axios in React with Async & Await. Also Error Handling with Try and Catch
+import { useState, useEffect } from "react";
+import "./App.css";
+import axios from "axios.jsx";
 
-### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+const App = () => {
+  const [myData, setMyData] = useState([]);
+  const [isError, setIsError] = useState("");
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+  // using Async Await
+  const getMyPostData = async () => {
+    try {
+      const res = await axios.get("https://jsonplaceholder.typicode.com/posts");
+      setMyData(res.data);
+    } catch (error) {
+      setIsError(error.message);
+    }
+  };
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+  // NOTE:  calling the function
+  useEffect(() => {
+    getMyPostData();
+  }, []);
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+  return (
+    <>
+      <h1>Axios Tutorial</h1>
+      {isError !== "" && <h2>{isError}</h2>}
 
-## Learn More
+      <div className="grid">
+        {myData.slice(0, 9).map((post) => {
+          const { body, id, title } = post;
+          return (
+            <div key={id} className="card">
+              <h2>{title.slice(0, 15).toUpperCase()}</h2>
+              <p>{body.slice(0, 100)}</p>
+            </div>
+          );
+        })}
+      </div>
+    </>
+  );
+};
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+export default App;
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Best way to write Axios in react app by creating a axios.js file and add the below code and then simply import the axios from this file and pass only the string for which you want data.
 
-### Code Splitting
+### axios.js
+import axios from "axios";
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+// we need to pass the baseURL as an object
+const API = axios.create({
+  baseURL: "https://jsonplaceholder.typicode.com",
+});
 
-### Analyzing the Bundle Size
+export default API;
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
 
-### Making a Progressive Web App
+### App.js
+import { useState, useEffect } from "react";
+import "./App.css";
+import axios from "./axios.jsx";
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+const App = () => {
+  const [myData, setMyData] = useState([]);
+  const [isError, setIsError] = useState("");
 
-### Advanced Configuration
+  // using Async Await
+  const getMyPostData = async () => {
+    try {
+      const res = await axios.get("/posts");
+      setMyData(res.data);
+    } catch (error) {
+      setIsError(error.message);
+    }
+  };
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+  // NOTE:  calling the function
+  useEffect(() => {
+    getMyPostData();
+  }, []);
 
-### Deployment
+  return (
+    <>
+      <h1>Axios Tutorial</h1>
+      {isError !== "" && <h2>{isError}</h2>}
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+      <div className="grid">
+        {myData.slice(0, 9).map((post) => {
+          const { body, id, title } = post;
+          return (
+            <div key={id} className="card">
+              <h2>{title.slice(0, 15).toUpperCase()}</h2>
+              <p>{body.slice(0, 100)}</p>
+            </div>
+          );
+        })}
+      </div>
+    </>
+  );
+};
 
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+export default App;
