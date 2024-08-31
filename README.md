@@ -17,9 +17,12 @@ Make all types of HTTP requests (GET, POST, PUT, DELETE)
 
 ## How to install Axios in React App
 Like any other npm package, you have to simply install Axios package in your React Application and import axios from the axios package.
+```
 - npm install axios
+```
 
 ## Use Axios in React with Promises and Error Handling
+```
 import { useState, useEffect } from "react";
 import "./App.css";
 import axios from "axios.jsx";
@@ -57,8 +60,12 @@ const App = () => {
 };
 
 export default App;
+```
+
 
 ## Use Axios in React with Async & Await. Also Error Handling with Try and Catch
+
+```
 import { useState, useEffect } from "react";
 import "./App.css";
 import axios from "axios.jsx";
@@ -104,10 +111,14 @@ const App = () => {
 };
 
 export default App;
+```
 
-## Best way to write Axios in react app by creating a axios.js file and add the below code and then simply import the axios from this file and pass only the string for which you want data.
+## Best way to write Axios 
+In react app by creating a axios.js file and add the below code and then simply import the axios from this file and pass only the string for which you want data.
 
 ### axios.js
+
+```
 import axios from "axios";
 
 // we need to pass the baseURL as an object
@@ -116,7 +127,7 @@ const API = axios.create({
 });
 
 export default API;
-
+```
 
 ### App.js
 ```
